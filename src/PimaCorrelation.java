@@ -1,4 +1,9 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.util.Scanner;
 
 public class PimaCorrelation {
 
@@ -42,21 +47,30 @@ public class PimaCorrelation {
 
     public static void main(String[] args) {
         // TODO: Replace sample data with Pima Indians Diabetes Dataset https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database
-        ArrayList<Double> X = new ArrayList<>();
-        X.add(15.0);
-        X.add(18.0);
-        X.add(21.0);
-        X.add(24.0);
-        X.add(27.0);
 
-        ArrayList<Double> Y = new ArrayList<>();
-        Y.add(25.0);
-        Y.add(25.0);
-        Y.add(27.0);
-        Y.add(31.0);
-        Y.add(32.0);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream("/Users/elhamahmadfayzi/IdeaProjects/exercise-pima-indian-dataset-ElhamFayzi/src/diabetes.csv");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            System.exit(1);
+        }
+        Scanner reader = new Scanner(fis);
+
+        reader.nextLine();
+
+        ArrayList<Double> pregnancies = new ArrayList<>();
+        ArrayList<Double> diabetes = new ArrayList<>();
+
+        while (reader.hasNextLine()) {
+            String[] line = reader.nextLine().split(",");
+
+            pregnancies.add(Double.parseDouble(line[0]));
+            diabetes.add(Double.parseDouble(line[8]));
+        }
+
 
         // Function call to correlationCoefficient
-        System.out.printf("%6f\n", Correlation(X, Y));
+        System.out.printf("%6f\n", Correlation(pregnancies, diabetes));
     }
 }
